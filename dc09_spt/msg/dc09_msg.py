@@ -140,6 +140,7 @@ class dc09_msg:
             ret += 'R{0:X}'.format(self.receiver)
         if self.line is not None:
             ret += 'L{0:X}'.format(self.line)
+        #ret += 'L0#' + self.account + '['
         ret += '#' + self.account + '['
         if self.key is None:
             ret += msg
