@@ -3,7 +3,10 @@
 # (c 2018 van Ovost Automatisering b.v.
 # Author : Jacq. van Ovost
 # ----------------------------
+from datetime import datetime
 from dc09_spt.param import *
+import logging
+import datetime
 """
 
 Copyright (c) 2018  van Ovost Automatisering b.v.
@@ -70,9 +73,11 @@ class dc05_msg:
                         3 means new restore
                         6 means old alarm
         """
+        print('dc05event params: '+ str(params))
         account = param.strpar(params,  'account',  spt_account)
         zone = param.numpar(params, 'zone',  '000')
         user = param.numpar(params, 'user',  None)
+        msg_content = param.strpar(params, 'msg_content',  'NULL')
         msg = ''
         if account is None:
             msg += '#0000|'
@@ -95,4 +100,9 @@ class dc05_msg:
             if len(zone) != 3:
                 zone = ('000' + zone)[-3:]
             msg += q + code + ' ' + area + ' ' + zone + ']'
+        utcnow = datetime.datetime.now()
+        utcnow = utcnow.strftime("_%H:%M:%S,%m-%d-%Y")
+        msg_content = '[' + msg_content + ']'
+        msg = msg + msg_content + utcnow
+        print ("Generatet Message: " + msg)
         return msg 
