@@ -252,15 +252,19 @@ class dc09_spt:
         if self.msg_nr > 9999:
             self.msg_nr = 1
         if mtype == 'SIA' or mtype == 'SIA-DCS':
+            print("SIA-DCS detected. Using DC03.")
             msg = dc03_msg.dc03event(self.account, mparam)
             dc09type = 'SIA-DCS'
         if mtype == 'CID' or mtype == 'ADM-CID':
+            print("ADM-CID detected. Using DC05.")
             msg = dc05_msg.dc05event(self.account, mparam)
             dc09type = 'ADM-CID'
         extra = dc09_msg.dc09_extra(mparam)
         if extra is not None:
+            print("DC09 extras detected. Using them.")
             msg = msg + extra
         tup = self.msg_nr, dc09type, msg
+        print("tup = "+str(tup))
         logging.debug('Message queued nr %s type %s content "%s"', self.msg_nr, dc09type, msg)
         self.queuelock.acquire()
         self.queue.append(tup)
